@@ -1,0 +1,20 @@
+window size: 1000
+gamemode: 2
+height: 30
+width: 30
+bombs: 300
+
+- adjust window size to suit your needs
+
+- gamemodes are: 0 (beginner), 1 (intermediate), 2 (expert) and 3 (custom)
+
+- height, width, and bombs can only be edited in the custom gamemode
+
+- height and width must be between 8 and 100
+
+- bombs must be between 0 and (height * width - 9)
+
+- seed generation might take a while on larger sized games with a low bomb count
+
+- format should remain like the one below!
+parameter: value

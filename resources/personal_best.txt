@@ -1,0 +1,3 @@
+beginner: 999
+intermediate: 999
+expert: 999
