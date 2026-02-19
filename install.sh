@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cmake -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -S . -B build/
+cd build
+make
+cp -r minesweeper ../resources/sprites ../resources/settings.txt ../resources/personal_best.txt ../bin
