@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 cmake -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_DOCS=OFF -S . -B build/
 cd build
