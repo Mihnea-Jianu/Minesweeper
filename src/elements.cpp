@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <fstream>
 #include <cstring>
 
@@ -95,9 +97,9 @@ void _resetButton::loadSprite(bool gameLost, bool gameWon)
 {
 	char src[31];
 
-	if(gameLost)      strcpy_s(src, 31, "sprites/resetButton/dead.txt");
-	else if(gameWon)  strcpy_s(src, 31, "sprites/resetButton/cool.txt");
-	else              strcpy_s(src, 31, "sprites/resetButton/smiley.txt");
+	if(gameLost)      strncpy(src, "sprites/resetButton/dead.txt",   31);
+	else if(gameWon)  strncpy(src, "sprites/resetButton/cool.txt",   31);
+	else              strncpy(src, "sprites/resetButton/smiley.txt", 31);
 
 	sprite.load(src);
 }
@@ -111,7 +113,7 @@ void _flagCounter::loadSprite()
 {
 	char src[21];
 
-	strcpy_s(src, 21, "sprites/digits/#.txt");
+	strncpy(src, "sprites/digits/#.txt", 21);
 
 	int16_t count = remainingFlags;
 	if(count > 999) count = 999;
@@ -148,7 +150,7 @@ void _timer::loadSprite()
 
 	char src[21];
 
-	strcpy_s(src, 21, "sprites/digits/#.txt");
+	strncpy(src, "sprites/digits/#.txt", 21);
 	
 	uint64_t count;
 
@@ -210,18 +212,18 @@ void _tile::loadSprite(bool gameLost)
 
 	if(!gameLost)
 	{
-		if(state == hidden) strcpy_s(src, 31, "sprites/tiles/hidden.txt");
-		if(state == marked) strcpy_s(src, 31, "sprites/tiles/marked.txt");
+		if(state == hidden) strncpy(src, "sprites/tiles/hidden.txt", 31);
+		if(state == marked) strncpy(src, "sprites/tiles/marked.txt", 31);
 		if(state == discovered)
 		{
-			strcpy_s(src, 31, "sprites/tiles/discovered#.txt");
+			strncpy(src, "sprites/tiles/discovered#.txt", 31);
 			src[24] = '0' + bombCount;
 		}
 	}
 	else
 	{
-		if(state == hidden && bombCount == 9) strcpy_s(src, 31, "sprites/tiles/hiddenBomb.txt");
-		if(state == marked && bombCount != 9) strcpy_s(src, 31, "sprites/tiles/markedPoorly.txt");
+		if(state == hidden && bombCount == 9) strncpy(src, "sprites/tiles/hiddenBomb.txt",   31);
+		if(state == marked && bombCount != 9) strncpy(src, "sprites/tiles/markedPoorly.txt", 31);
 	}
 
 	sprite.load(src);

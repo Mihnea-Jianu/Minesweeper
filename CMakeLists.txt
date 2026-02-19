@@ -5,8 +5,7 @@ project(MINESWEEPER)
 add_executable(${PROJECT_NAME} src/main.cpp src/game.cpp src/elements.cpp src/utilities.cpp)
 
 add_subdirectory(external/glfw)
+target_link_libraries(${PROJECT_NAME} glfw)
 
-target_include_directories(${PROJECT_NAME} PUBLIC external/glfw/include)
-
-target_link_directories(${PROJECT_NAME} PRIVATE external/glfw/build/src)
-target_link_libraries(${PROJECT_NAME} glfw3)
+find_package(OpenGL REQUIRED)
+target_link_libraries(${PROJECT_NAME} OpenGL::GL)
