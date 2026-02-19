@@ -8,6 +8,16 @@
 #include "utilities.h"
 #include "elements.h"
 
+_position _position::operator+(_position& position)
+{
+    _position newPosition;
+
+    newPosition.i = i + position.i;
+    newPosition.j = j + position.j;
+
+    return newPosition;
+}
+
 void _sprite::load(const char* src)
 {
 	std::fstream spriteSource(src);
@@ -48,8 +58,8 @@ void _sprite::draw(_position& position)
 {
 	for(uint8_t i = 0; i < blockCount; i++)
 	{
-		_position& topLeftPosition     = position + block[i].topLeft;
-		_position& bottomRightPosition = position + block[i].bottomRight;
+		_position topLeftPosition     = position + block[i].topLeft;
+		_position bottomRightPosition = position + block[i].bottomRight;
 
 		uint8_t& colorIndex = block[i].colorIndex;
 

@@ -10,15 +10,7 @@ struct _position
 {
 	uint16_t i = 0, j = 0;
 
-	_position& operator+(_position& position)
-	{
-		_position newPosition;
-
-		newPosition.i = i + position.i;
-		newPosition.j = j + position.j;
-
-		return newPosition;
-	}
+	_position operator+(_position& position);
 };
 
 struct _color

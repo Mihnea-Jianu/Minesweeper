@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.16...3.28)
+cmake_minimum_required(VERSION 3.16)
 
-project(MINESWEEPER)
+project(minesweeper)
 
 add_executable(${PROJECT_NAME} src/main.cpp src/game.cpp src/elements.cpp src/utilities.cpp)
 
