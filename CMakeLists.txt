@@ -9,3 +9,7 @@ target_link_libraries(${PROJECT_NAME} glfw)
 
 find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} OpenGL::GL)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif

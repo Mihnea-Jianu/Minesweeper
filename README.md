@@ -1,5 +1,7 @@
 # Minesweeper
 
+## 
+
 ## Windows Dependencies
 
 Make sure the following programs are installed on your computer:
@@ -23,6 +25,8 @@ Make sure the following programs are installed on your computer:
 The last three are development packages necessarry for the compilation of GLFW.
 
 ## Installation
+
+**Make sure you have all the dependencies listed for your operating system.**
 
 First, you need to clone this repository to your computer. Make sure to clone recursively, as the repository uses GLFW as a submodule that gets pulled from https://github.com/glfw/glfw.
 

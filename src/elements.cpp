@@ -1,4 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
+// This define is here so MSVC does not complain 
+// about the cstring API on Windows builds.
+// #define _CRT_SECURE_NO_WARNINGS
 
 #include <fstream>
 #include <cstring>
