@@ -1,17 +1,24 @@
 #include <ctime>
 #include <cstdlib>
 
+#include "utilities.h"
 #include "game.h"
 
-#define leftClick 0
+#define leftClick  0
 #define rightClick 1
-#define release 0
-#define press 1
+#define release    0
+#define press      1
 
 #define gameLost (bombTilesDiscovered != 0)
-#define gameWon (safeTilesDiscovered == tileMatrixSafeCount)
+#define gameWon  (safeTilesDiscovered == tileMatrixSafeCount)
 
-void _game::init()
+Game::Game()
+{
+	setupUtilities();
+	flagCounter.remainingFlags = tileMatrixBombCount;
+}
+
+void Game::init()
 {
 	srand(time(NULL));
 
@@ -19,7 +26,7 @@ void _game::init()
 	loadSprites();
 }
 
-void _game::reset()
+void Game::reset()
 {
 	flagCounter.remainingFlags = tileMatrixBombCount;
 
@@ -42,7 +49,7 @@ void _game::reset()
 	loadSprites();
 }
 
-void _game::positionElements()
+void Game::positionElements()
 {
 	casing.position.i = casingVerticalOffset;
 	casing.position.j = casingHorizontalOffset;
@@ -59,12 +66,12 @@ void _game::positionElements()
 	for(uint8_t i = 0; i < tileMatrixHeight; i++)
 		for(uint8_t j = 0; j < tileMatrixWidth; j++)
 		{
-			tileMatrix[i][j].position.i = tileMatrixVerticalOffset + tileSize * i;
+			tileMatrix[i][j].position.i = tileMatrixVerticalOffset   + tileSize * i;
 			tileMatrix[i][j].position.j = tileMatrixHorizontalOffset + tileSize * j;
 		}
 }
 
-void _game::loadSprites()
+void Game::loadSprites()
 {
 	casing.loadSprite();
 	resetButton.loadSprite();
@@ -76,7 +83,7 @@ void _game::loadSprites()
 			tileMatrix[i][j].loadSprite();
 }
 
-void _game::drawSprites()
+void Game::drawSprites()
 {
 	casing.drawSprite();
 	resetButton.drawSprite();
@@ -88,17 +95,17 @@ void _game::drawSprites()
 			tileMatrix[i][j].drawSprite();
 }
 
-void _game::processMouseEvent(bool button, bool action, _position& position)
+void Game::processMouseEvent(bool button, bool action, Position& position)
 {
-	#define positionInsideTileMatrix (position.i >= tileMatrix[0][0].position.i && position.i < tileMatrix[tileMatrixHeight - 1][tileMatrixWidth - 1].position.i + tileSize && position.j >= tileMatrix[0][0].position.j && position.j < tileMatrix[tileMatrixHeight - 1][tileMatrixWidth - 1].position.j + tileSize)
+	#define positionInsideTileMatrix  (position.i >= tileMatrix[0][0].position.i && position.i < tileMatrix[tileMatrixHeight - 1][tileMatrixWidth - 1].position.i + tileSize && position.j >= tileMatrix[0][0].position.j && position.j < tileMatrix[tileMatrixHeight - 1][tileMatrixWidth - 1].position.j + tileSize)
 	#define positionInsideResetButton (position.i >= resetButton.position.i && position.i < resetButton.position.i + resetButtonSize && position.j >= resetButton.position.j && position.j < resetButton.position.j + resetButtonSize)
 
 	if(positionInsideTileMatrix && !gameLost && !gameWon)
 	{
-		uint8_t tileMatrixI = (position.i - tileMatrixVerticalOffset) / tileSize;
+		uint8_t tileMatrixI = (position.i - tileMatrixVerticalOffset)   / tileSize;
 		uint8_t tileMatrixJ = (position.j - tileMatrixHorizontalOffset) / tileSize;
 
-		_tile& tile = tileMatrix[tileMatrixI][tileMatrixJ];
+		Tile& tile = tileMatrix[tileMatrixI][tileMatrixJ];
 
 		if(button == rightClick && action == release && tile.state != discovered)
 		{
@@ -142,7 +149,7 @@ void _game::processMouseEvent(bool button, bool action, _position& position)
 	}
 }
 
-void _game::generateSeed(uint8_t protectedTileI, uint8_t protectedTileJ)
+void Game::generateSeed(uint8_t protectedTileI, uint8_t protectedTileJ)
 {
 	uint16_t currentBombCount = 0;
 
@@ -183,7 +190,7 @@ void _game::generateSeed(uint8_t protectedTileI, uint8_t protectedTileJ)
 	seedGenerated = true;
 }
 
-void _game::flagShortcut(uint8_t shortcutTileI, uint8_t shortcutTileJ)
+void Game::flagShortcut(uint8_t shortcutTileI, uint8_t shortcutTileJ)
 {
 	uint8_t flagCount = 0;
 
@@ -213,12 +220,11 @@ void _game::flagShortcut(uint8_t shortcutTileI, uint8_t shortcutTileJ)
 
 					if(tileMatrix[I][J].bombCount == 0) discoverPool(I, J);
 				}
-								
 			}
 	}
 }
 
-void _game::discoverPool(uint8_t discoverTileI, uint8_t discoverTileJ)
+void Game::discoverPool(uint8_t discoverTileI, uint8_t discoverTileJ)
 {
 	for(int8_t I = discoverTileI - 1; I <= discoverTileI + 1; I++)
 		for(int8_t J = discoverTileJ - 1; J <= discoverTileJ + 1; J++)
@@ -234,11 +240,10 @@ void _game::discoverPool(uint8_t discoverTileI, uint8_t discoverTileJ)
 
 				if(tileMatrix[I][J].bombCount == 0) discoverPool(I, J);
 			}
-				
 		}
 }
 
-void _game::win()
+void Game::win()
 {
 	updatePersonalBest(gamemode, timer.getCurrentTimeStamp());
 
@@ -257,7 +262,7 @@ void _game::win()
 	flagCounter.loadSprite();
 }
 
-void _game::lose()
+void Game::lose()
 {
 	resetButton.loadSprite(gameLost, false);
 	timer.frozen = true;
@@ -266,10 +271,4 @@ void _game::lose()
 		for(uint8_t j = 0; j < tileMatrixWidth; j++)
 			if(tileMatrix[i][j].state == hidden && tileMatrix[i][j].bombCount == 9 || tileMatrix[i][j].state == marked && tileMatrix[i][j].bombCount != 9)
 				tileMatrix[i][j].loadSprite(gameLost);
-}
-
-_game::_game()
-{
-	setupUtilities();
-	flagCounter.remainingFlags = tileMatrixBombCount;
 }

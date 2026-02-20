@@ -1,7 +1,3 @@
-// This define is here so MSVC does not complain 
-// about the cstring API on Windows builds.
-// #define _CRT_SECURE_NO_WARNINGS
-
 #include <fstream>
 #include <cstring>
 
@@ -10,9 +6,9 @@
 #include "utilities.h"
 #include "elements.h"
 
-_position _position::operator+(_position& position)
+Position Position::operator+(Position& position)
 {
-    _position newPosition;
+    Position newPosition;
 
     newPosition.i = i + position.i;
     newPosition.j = j + position.j;
@@ -20,7 +16,7 @@ _position _position::operator+(_position& position)
     return newPosition;
 }
 
-void _sprite::load(const char* src)
+void Sprite::load(const char* src)
 {
 	std::fstream spriteSource(src);
 
@@ -40,30 +36,30 @@ void _sprite::load(const char* src)
 	for(uint8_t i = 0; i < colorCount; i++)
 		spriteSource >> color[i].r >> color[i].g >> color[i].b;
 
-	unsigned short spriteTopLeftI, spriteTopLeftJ, spriteBottomRightI, spriteBottomRightJ, spriteColorIndex;
+	unsigned short blockTopLeftI, blockTopLeftJ, blockBottomRightI, blockBottomRightJ, blockColorIndex;
 
 	for(uint8_t i = 0; i < blockCount; i++)
 	{
-		spriteSource >> spriteTopLeftI >> spriteTopLeftJ >> spriteBottomRightI >> spriteBottomRightJ >> spriteColorIndex;
+		spriteSource >> blockTopLeftI >> blockTopLeftJ >> blockBottomRightI >> blockBottomRightJ >> blockColorIndex;
 		
-		block[i].topLeft.i     = spriteTopLeftI;
-		block[i].topLeft.j     = spriteTopLeftJ;
-		block[i].bottomRight.i = spriteBottomRightI;
-		block[i].bottomRight.j = spriteBottomRightJ;
-		block[i].colorIndex    = spriteColorIndex;
+		block[i].topLeft.i     = blockTopLeftI;
+		block[i].topLeft.j     = blockTopLeftJ;
+		block[i].bottomRight.i = blockBottomRightI;
+		block[i].bottomRight.j = blockBottomRightJ;
+		block[i].colorIndex    = blockColorIndex;
 	}
 
 	spriteSource.close();
 }
 
-void _sprite::draw(_position& position)
+void Sprite::draw(Position& position)
 {
 	for(uint8_t i = 0; i < blockCount; i++)
 	{
-		_position topLeftPosition     = position + block[i].topLeft;
-		_position bottomRightPosition = position + block[i].bottomRight;
+		Position topLeftPosition     = position + block[i].topLeft;
+		Position bottomRightPosition = position + block[i].bottomRight;
 
-		uint8_t& colorIndex = block[i].colorIndex;
+		uint8_t colorIndex = block[i].colorIndex;
 
 		if(bottomRightPosition.i >= pixelMatrixSize || bottomRightPosition.j >= pixelMatrixSize)
 		{
@@ -86,42 +82,42 @@ void _sprite::draw(_position& position)
 	}
 }
 
-void _casing::loadSprite()
+void Casing::loadSprite()
 {
 	sprite.load("sprites/casing/casing.txt");
 
 	for(uint8_t i = 0; i < sprite.blockCount - 10; i++)
 	{
 		sprite.block[i].bottomRight.i = pixelMatrixHeight - sprite.block[i].bottomRight.i - 1;
-		sprite.block[i].bottomRight.j = pixelMatrixWidth - sprite.block[i].bottomRight.j - 1;
+		sprite.block[i].bottomRight.j = pixelMatrixWidth  - sprite.block[i].bottomRight.j - 1;
 	}
 
 	for(uint8_t i = sprite.blockCount - 10; i < sprite.blockCount; i++)
 		sprite.block[i].bottomRight.j = pixelMatrixWidth - sprite.block[i].bottomRight.j - 1;
 }
 
-void _casing::drawSprite()
+void Casing::drawSprite()
 {
 	sprite.draw(position);
 }
 
-void _resetButton::loadSprite(bool gameLost, bool gameWon)
+void ResetButton::loadSprite(bool gameLost, bool gameWon)
 {
 	char src[31];
 
-	if(gameLost)      strncpy(src, "sprites/resetButton/dead.txt",   31);
-	else if(gameWon)  strncpy(src, "sprites/resetButton/cool.txt",   31);
+	if(gameLost)      strncpy(src, "sprites/resetButton/dead.txt"  , 31);
+	else if(gameWon)  strncpy(src, "sprites/resetButton/cool.txt"  , 31);
 	else              strncpy(src, "sprites/resetButton/smiley.txt", 31);
 
 	sprite.load(src);
 }
 
-void _resetButton::drawSprite()
+void ResetButton::drawSprite()
 {
 	sprite.draw(position);
 }
 
-void _flagCounter::loadSprite()
+void FlagCounter::loadSprite()
 {
 	char src[21];
 
@@ -150,13 +146,13 @@ void _flagCounter::loadSprite()
 	}
 }
 
-void _flagCounter::drawSprite()
+void FlagCounter::drawSprite()
 {
 	for(uint8_t i = 0; i < 3; i++)
 		sprite[i].draw(position);
 }
 
-void _timer::loadSprite()
+void Timer::loadSprite()
 {
 	if(frozen) return;
 
@@ -192,19 +188,19 @@ void _timer::loadSprite()
 	}
 }
 
-void _timer::drawSprite()
+void Timer::drawSprite()
 {
 	for(uint8_t i = 0; i < 3; i++)
 		sprite[i].draw(position);
 }
 
-void _timer::start()
+void Timer::start()
 {
 	startTimeStamp = glfwGetTime();
 	enabled = true;
 }
 
-uint16_t _timer::getCurrentTimeStamp()
+uint16_t Timer::getCurrentTimeStamp()
 {
 	uint64_t count;
 
@@ -218,7 +214,7 @@ uint16_t _timer::getCurrentTimeStamp()
 	return count;
 }
 
-void _tile::loadSprite(bool gameLost)
+void Tile::loadSprite(bool gameLost)
 {
 	char src[31];
 
@@ -234,14 +230,14 @@ void _tile::loadSprite(bool gameLost)
 	}
 	else
 	{
-		if(state == hidden && bombCount == 9) strncpy(src, "sprites/tiles/hiddenBomb.txt",   31);
+		if(state == hidden && bombCount == 9) strncpy(src, "sprites/tiles/hiddenBomb.txt"  , 31);
 		if(state == marked && bombCount != 9) strncpy(src, "sprites/tiles/markedPoorly.txt", 31);
 	}
 
 	sprite.load(src);
 }
 
-void _tile::drawSprite()
+void Tile::drawSprite()
 {
 	sprite.draw(position);
 }

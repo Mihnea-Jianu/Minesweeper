@@ -1,10 +1,10 @@
 #include <fstream>
 #include <cstdint>
 
-#define beginner 0
+#define beginner     0
 #define intermediate 1
-#define expert 2
-#define custom 3
+#define expert       2
+#define custom       3
 
 uint8_t gamemode;
 
@@ -92,38 +92,38 @@ void setupUtilities()
 
 	windowPX = 2.0 / windowSize;
 
-	tileMatrixSafeCount = tileMatrixHeight * tileMatrixWidth - tileMatrixBombCount;
+	tileMatrixSafeCount  = tileMatrixHeight * tileMatrixWidth - tileMatrixBombCount;
 	tileMatrixBombChance = 100.0 * tileMatrixBombCount / (tileMatrixHeight * tileMatrixWidth);
 
-	tileSize = 16;
-	borderWidth = 12;
+	tileSize         = 16;
+	borderWidth      = 12;
 	scoreBoardHeight = 32;
-	resetButtonSize = 26;
+	resetButtonSize  = 26;
 
 	pixelMatrixHeight = tileSize * tileMatrixHeight + 3 * borderWidth + scoreBoardHeight;
-	pixelMatrixWidth = tileSize * tileMatrixWidth + 2 * borderWidth;
-	pixelMatrixSize = pixelMatrixHeight > pixelMatrixWidth? pixelMatrixHeight : pixelMatrixWidth;
+	pixelMatrixWidth  = tileSize * tileMatrixWidth  + 2 * borderWidth;
+	pixelMatrixSize   = pixelMatrixHeight > pixelMatrixWidth? pixelMatrixHeight : pixelMatrixWidth;
 	px = 2.0 / pixelMatrixSize;
 
-	unusedVerticalSpace = pixelMatrixSize - pixelMatrixHeight;
+	unusedVerticalSpace   = pixelMatrixSize - pixelMatrixHeight;
 	unusedHorizontalSpace = pixelMatrixSize - pixelMatrixWidth;
 
-	globalVerticalOffset = unusedVerticalSpace;
+	globalVerticalOffset   = unusedVerticalSpace;
 	globalHorizontalOffset = 0;
 
-	casingVerticalOffset = globalVerticalOffset;
+	casingVerticalOffset   = globalVerticalOffset;
 	casingHorizontalOffset = globalHorizontalOffset;
 
-	resetButtonVerticalOffset = globalVerticalOffset + borderWidth + 3;
+	resetButtonVerticalOffset   = globalVerticalOffset   + borderWidth + 3;
 	resetButtonHorizontalOffset = globalHorizontalOffset + pixelMatrixWidth / 2 - resetButtonSize / 2;
 
-	flagCounterVerticalOffset = globalVerticalOffset + borderWidth + 4;
+	flagCounterVerticalOffset   = globalVerticalOffset   + borderWidth + 4;
 	flagCounterHorizontalOffset = globalHorizontalOffset + borderWidth + 4;
 
-	timerVerticalOffset = globalVerticalOffset + borderWidth + 4;
+	timerVerticalOffset   = globalVerticalOffset   + borderWidth + 4;
 	timerHorizontalOffset = globalHorizontalOffset + pixelMatrixWidth - borderWidth - 43;
 
-	tileMatrixVerticalOffset = globalVerticalOffset + 2 * borderWidth + scoreBoardHeight;
+	tileMatrixVerticalOffset   = globalVerticalOffset   + 2 * borderWidth + scoreBoardHeight;
 	tileMatrixHorizontalOffset = globalHorizontalOffset + borderWidth;
 
 	settingsSource.close();
