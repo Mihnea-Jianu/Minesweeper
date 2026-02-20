@@ -1,18 +1,23 @@
 # Minesweeper
 
-## 
+This program is an implementation for a classic Minesweeper game with a GUI.
+The program is written in C++, and uses the GLFW library for windowing and graphical context creation, as well as the OpenGL library for drawing the graphics themselves.
 
-## Windows Dependencies
+## How the game works internally
 
-Make sure the following programs are installed on your computer:
+
+
+## Dependencies
+
+Make sure the programs listed below are installed on your computer:
+
+### Windows
 
     - Git for Windows (which comes with Git Bash)
     - CMake for Windows
     - Microsoft Visual Studio
 
-## Linux Dependencies
-
-Make sure the following programs are installed on your computer:
+### Linux
 
     - git
     - bash
